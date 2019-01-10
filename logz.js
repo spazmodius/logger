@@ -2,7 +2,6 @@
 
 const { Readable } = require('stream')
 const { stringify } = JSON
-const flatstr = require('flatstr')
 
 const levels = {
 	trace: 10,
@@ -71,7 +70,7 @@ function Logz(meta) {
 	}
 
 	function levelLogger(level) {
-		const epilogue = flatstr(prefix + levelLabel + level + timeLabel)
+		const epilogue = prefix + levelLabel + level + timeLabel
 		return epiLogger(epilogue)
 	}
 
