@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "description": "Fast structured logging for Node.js",
   "repository": "github:spazmodius/logz",
-  "main": "logz.js"
+  "main": "logz.js",
+  "devDependencies": {
+    "@spazmodius/hrbench": "github:spazmodius/hrbench",
+    "pino": "^5.10.6"
+  }
 }
