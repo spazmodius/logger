@@ -1,6 +1,7 @@
 'use strict'
 
 const { Readable } = require('stream')
+const { stringify } = JSON
 const flatstr = require('flatstr')
 
 const levels = {
@@ -12,16 +13,32 @@ const levels = {
 	fatal: 60,
 }
 
-const levelLabel = ',"level":'
+function normalize(meta) {
+	if (meta === undefined || meta === null)
+		return {}
+	if (typeof meta === 'object')
+		return meta
+	return { name: meta }
+}
+
+function formatPrefix(meta, prefix = '{') {
+	return Object.entries(meta)
+		.reduce((prefix, [key, value]) => `${prefix}${stringify(key)}:${stringify(value)},`, prefix)
+}
+
+const levelLabel = '"level":'
 const timeLabel = ',"time":'
 const eventLabel = ',"event":'
 const dataLabel = ',"data":'
 
-function Logz(meta = {}) {
+function Logz(meta) {
+	meta = normalize(meta)
+	const prefix = formatPrefix(meta)
+	const suffix = '}\n'
+
 	let pushing, chunk = ''
 	const stream = new Readable({ read })
-	const prefix = JSON.stringify(meta).slice(0, -1)
-	const suffix = '}\n'
+
 
 	function read(size) {
 		pushing = true
