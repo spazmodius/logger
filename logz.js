@@ -27,7 +27,7 @@ function formatPrefix(meta, prefix = '{') {
 
 const levelLabel = '"level":'
 const timeLabel = ',"time":'
-const eventLabel = ',"event":'
+const eventLabel = ',"msg":'
 const dataLabel = ',"data":'
 
 function Logz(meta) {
