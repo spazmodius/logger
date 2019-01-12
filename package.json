@@ -7,5 +7,8 @@
   "devDependencies": {
     "@spazmodius/hrbench": "github:spazmodius/hrbench",
     "pino": "^5.10.6"
+  },
+  "dependencies": {
+    "@spazmodius/queue": "github:spazmodius/queue"
   }
 }
