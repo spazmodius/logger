@@ -4,11 +4,11 @@
   "description": "Ultra-low-overhead JSON logging for Node.js",
   "repository": "github:spazmodius/logz",
   "main": "logz.js",
+  "dependencies": {
+    "@spazmodius/queue": "github:spazmodius/queue"
+  },
   "devDependencies": {
     "@spazmodius/hrbench": "github:spazmodius/hrbench",
     "pino": "^5.10.6"
-  },
-  "dependencies": {
-    "@spazmodius/queue": "github:spazmodius/queue"
   }
 }
