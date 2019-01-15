@@ -1,47 +1,20 @@
 'use strict'
 
-const Queue = require('@spazmodius/queue')
 const { start, append, finalize } = require('./lib/formatter')
 const normalize = require('./lib/normalize')
+const WriteQueue = require('./lib/write-queue')
 const { now } = Date
 
 function Logz(output, meta) {
 	meta = normalize(meta)
 	const prefix = start(meta)
-
-	let pushing = false, scheduled = false
-	const queue = Queue()
-	output.on('drain', drain)
-
-	function drain() {
-		pushing = true
-		if (queue.length > 0)
-			scheduleFlush()
-	}
-
-	function scheduleFlush() {
-		if (!scheduled) {
-			setImmediate(flush)
-			scheduled = true
-		}
-	}
-
-	function flush() {
-		scheduled = false
-		do {
-			const args = queue.dequeue()
-			const line = finalize(args)
-			pushing = output.write(line)
-		} while (pushing && queue.length > 0)
-	}
+	const { push } = WriteQueue(output, finalize)
 
 	function logLevel(level) {
 		const partial = append(prefix, { level })
 		return (msg, data) => {
 			const time = now()
-			queue.enqueue({ partial, time, msg: String(msg), data })
-			if (pushing)
-				scheduleFlush()
+			push({ partial, time, msg: String(msg), data })
 		}
 	}
 
