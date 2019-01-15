@@ -1,6 +1,6 @@
 {
   "name": "@spazmodius/logz",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Ultra-low-overhead JSON logging for Node.js",
   "repository": "github:spazmodius/logz",
   "main": "logz.js",
