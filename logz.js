@@ -1,20 +1,19 @@
 'use strict'
 
-const { Readable } = require('stream')
 const Queue = require('@spazmodius/queue')
 const { start, append, finalize } = require('./lib/formatter')
 const normalize = require('./lib/normalize')
 const { now } = Date
 
-function Logz(meta) {
+function Logz(output, meta) {
 	meta = normalize(meta)
 	const prefix = start(meta)
 
 	let pushing = false, scheduled = false
 	const queue = Queue()
-	const stream = new Readable({ read })
+	output.on('drain', drain)
 
-	function read(size) {
+	function drain() {
 		pushing = true
 		if (queue.length > 0)
 			scheduleFlush()
@@ -29,11 +28,10 @@ function Logz(meta) {
 
 	function flush() {
 		scheduled = false
-
 		do {
 			const args = queue.dequeue()
 			const line = finalize(args)
-			pushing = stream.push(line)
+			pushing = output.write(line)
 		} while (pushing && queue.length > 0)
 	}
 
@@ -48,7 +46,6 @@ function Logz(meta) {
 	}
 
 	const defs = {
-		stream: { value: stream },
 		trace: { value: logLevel(10), enumerable: true },
 		debug: { value: logLevel(20), enumerable: true },
 		info: { value: logLevel(30), enumerable: true },

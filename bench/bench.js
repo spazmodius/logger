@@ -19,8 +19,7 @@ function pinoFactory(dest) {
 
 function logzFactory(dest) {
 	const Logz = require('../logz')
-	const logger = Logz({ name: 'LOGZ', pid, hostname })
-	logger.stream.pipe(dest)
+	const logger = Logz(dest, { name: 'LOGZ', pid, hostname })
 	return logger
 }
 
