@@ -17,25 +17,32 @@ function pinoFactory(dest) {
 	return logger
 }
 
-function logzFactory(dest) {
-	const Logz = require('../logz')
-	const logger = Logz(dest, { name: 'LOGZ', pid, hostname })
-	return logger
+function logrFactory(dest) {
+	const Logger = require('../logger')
+	const logger = Logger(dest)
+	const base = logger.child({ name: 'LOGR', pid, hostname })
+	const info = base.child({ level: 30 }, data_msg)
+	return info
+
+	function data_msg(data, msg) {
+		return Logger.stringifiers.properties.fast(data) + ',' + Logger.stringifiers.property.fast('msg', msg)
+	}
 }
 
 const message = 'hello world'
 const data = { a: 1, b: 2, c: null, d: 'e', f: false }
 
-let pino = pinoFactory(stdout), logz = logzFactory(stdout)
+// output a line from both loggers, for visual comparison
+let pino = pinoFactory(stdout), logr = logrFactory(stdout)
 pino.info(data, message)
-logz.info(message, data)
+logr(data, message)
 
-pino = pinoFactory(devnul), logz = logzFactory(devnul)
+pino = pinoFactory(devnul), logr = logrFactory(devnul)
 
 const bench = new Bench({ maxCycles: 10000 })
 bench
 	.test(() => pino.info(data, message))
-	.test(() => logz.info(message, data))
+	.test(() => logr(data, message))
 	.run()
 	.then(Bench.summarize)
 	.then(console.log, console.error)
