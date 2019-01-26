@@ -1,7 +1,7 @@
 'use strict'
 const assert = require('./lib/assert')
 const WriteQueue = require('./lib/write-queue')
-const now = require('./lib/hr-now')
+const now = require('@spazmodius/now')
 const { getSignature, setSignature } = require('./lib/signature')
 
 const { parse: JSONparse } = JSON

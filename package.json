@@ -1,6 +1,6 @@
 {
   "name": "@spazmodius/logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ultra-low-overhead, unopinionated JSON logging for Node.js",
   "repository": "github:spazmodius/logger",
   "main": "logger.js",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@spazmodius/assert": "github:spazmodius/assert",
+    "@spazmodius/now": "github:spazmodius/now",
     "@spazmodius/queue": "github:spazmodius/queue"
   },
   "devDependencies": {
