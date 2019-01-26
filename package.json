@@ -4,12 +4,20 @@
   "description": "Ultra-low-overhead, unopinionated JSON logging for Node.js",
   "repository": "github:spazmodius/logger",
   "main": "logger.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "ava": {
+    "babel": false,
+    "compileEnhancements": false
+  },
   "dependencies": {
     "@spazmodius/assert": "github:spazmodius/assert",
     "@spazmodius/queue": "github:spazmodius/queue"
   },
   "devDependencies": {
     "@spazmodius/hrbench": "github:spazmodius/hrbench",
+    "ava": "^1.1.0",
     "pino": "^5.10.8"
   }
 }

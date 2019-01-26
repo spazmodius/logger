@@ -3,7 +3,7 @@
 ***Ultra-low-overhead, unopinionated JSON logging for Node.js***
 
 This library provides base functionality for generating JSON logs and writing them to a stream.
-It has very few opinions about what goes into the logs, but can easily be the core of a full-featured logging framework.
+It has very few opinions about what goes into the logs, and can easily be the core of a full-featured logging framework.
 
 ## Install and Usage
 `npm install spazmodius/logger`
