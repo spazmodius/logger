@@ -50,7 +50,7 @@ The parent-most logger is very basic, but each child can extend the meta fields,
  This is the root of a "family" of loggers that all will write to the same output stream.
 
  This base logger has empty meta (`{}`).
- Its signature is an optional object `fields`, whose JSON-serializable properties will be included as fields in the line of JSON.  (Its stringify function is, in fact, [`Logger.stringifiers.fields`](#loggerstringifiersfields-fields-).)
+ Its signature is an optional object `fields`, whose JSON-serializable properties will be included as fields in the line of JSON.  (Its stringify function is, in fact, [`Logger.stringify.fields`](#loggerstringifyfields-fields-).)
 
 Example:
 ```js
@@ -115,7 +115,7 @@ const log = base.child({ pid: process.pid, hostname: os.hostname() })
 // a logger that logs Error objects
 const logError = log.child(
 	{ sev: 'ERROR'}, 
-	error => Logger.stringifiers.fields.fast({
+	error => Logger.stringify.fields.fast({
 		msg: error.message,
 		err: { stack: error.stack, ...error }
 	})
@@ -143,11 +143,11 @@ process.on('uncaughtException', err => {
 
 To assist with constructing fast and effecient stringify functions, there is a small library of utility functions.
 
-### Logger.stringifiers.none()
+### Logger.stringify.none()
 
 Returns the empty string, the stringification of no fields.
 
-### Logger.stringifiers.fields( _[fields]_ )
+### Logger.stringify.fields( _[fields]_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
@@ -160,15 +160,15 @@ or serializes to a non-object JSON value,
 or has no serializable properties,
 then empty string is returned.
 
-### Logger.stringifiers.fields.fast( _fields_ )
+### Logger.stringify.fields.fast( _fields_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
 | `fields` | object | | Object whose JSON-serializable properties become JSON fields. _Must be a value that serializes to a JSON object._
 
-A fast, but restrictive, version of [`Logger.stringifiers.fields`](#loggerstringifiersfields-fields-).
+A fast, but restrictive, version of [`Logger.stringify.fields`](#loggerstringifyfields-fields-).
 
-### Logger.stringifiers.field( _name, value_ )
+### Logger.stringify.field( _name, value_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
@@ -178,16 +178,16 @@ A fast, but restrictive, version of [`Logger.stringifiers.fields`](#loggerstring
 Stringifies a single field.
 If `value` is not JSON-serializable, then returns empty string.
 
-### Logger.stringifiers.field.fast( _name, value_ )
+### Logger.stringify.field.fast( _name, value_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
 | `name` | string | | Name of the field to serialize.  _Must be a string that does not require JSON escaping._
 | `value` | any | | Vaue of the field to serialize. _Must be a JSON-serializable value._
 
-A fast, but restrictive, version of [`Logger.stringifiers.field`](#loggerstringifiersfield-name-value-).
+A fast, but restrictive, version of [`Logger.stringify.field`](#loggerstringifyfield-name-value-).
 
-### Logger.stringifiers.quote( _str_ )
+### Logger.stringify.quote( _str_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
@@ -195,10 +195,10 @@ A fast, but restrictive, version of [`Logger.stringifiers.field`](#loggerstringi
 
 Serializes a value to a JSON quoted string, escaping characters as necessary.
 
-### Logger.stringifiers.quote.fast( _str_ )
+### Logger.stringify.quote.fast( _str_ )
 
 | Argument | Type | Optional | Description
 |---|---|---|---
 | `str` | string | | String to enclose in quotes. _Must be a string that does not require JSON escaping._
 
-A fast, but restrictive, version of [`Logger.stringifiers.quote`](#loggerstringifiersquote-str-).
+A fast, but restrictive, version of [`Logger.stringify.quote`](#loggerstringifyquote-str-).

@@ -25,7 +25,7 @@ function logrFactory(dest) {
 	return info
 
 	function data_msg(data, msg) {
-		return Logger.stringifiers.properties.fast(data) + ',' + Logger.stringifiers.property.fast('msg', msg)
+		return Logger.stringify.fields.fast(data) + ',' + Logger.stringify.field.fast('msg', msg)
 	}
 }
 

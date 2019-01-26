@@ -1,7 +1,6 @@
 'use strict'
 const assert = require('./lib/assert')
 const WriteQueue = require('./lib/write-queue')
-const stringifiers = require('./lib/stringifiers')
 const now = require('./lib/hr-now')
 const { getSignature, setSignature } = require('./lib/signature')
 
@@ -11,10 +10,10 @@ const EMPTY_META = Object.freeze({})
 
 function Logger(output) {
 	const { push, flush } = WriteQueue(output, transform)
-	return createLogger(push, flush, EMPTY_META, stringifiers.properties)
+	return createLogger(push, flush, EMPTY_META, Logger.stringify.fields)
 }
 
-Logger.stringifiers = stringifiers
+Logger.stringify = require('./lib/stringify')
 
 function transform({ prefix, stringify, args, time }) {
 	const fields = stringify(...args)
@@ -37,8 +36,8 @@ function createLogger(push, flush, meta, stringify) {
 }
 
 function createLogFunction(push, meta, stringify) {
-	const properties = stringifiers.properties.fast(meta)
-	const prefix = properties? '{' + properties + ',': '{'
+	const fields = Logger.stringify.fields.fast(meta)
+	const prefix = fields? '{' + fields + ',': '{'
 	return function log(...args) {
 		const time = now()
 		push({ prefix, stringify, args, time })
